@@ -6,9 +6,15 @@ on:
         description: The name of required artifact
         required: false
         default: dist
-        type: string        
+        type: string
+    outputs:
+      result:
+        description: The result of deployment operation
+        value: ${{jobs.deploy.outputs.outcome}}
 jobs:
   deploy:
+    outputs: 
+      outcome: ${{steps.set-result.outputs.step-result}}
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
@@ -19,4 +25,6 @@ jobs:
         run: ls -la
       - name: Output Information
         run: echo "Deploy and Upload..."
-
+      - name: Set result output
+        id: set-result
+        run: echo "step-result=success" >> $GITHUB_OUTPUT
