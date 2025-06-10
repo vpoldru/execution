@@ -37,11 +37,12 @@ jobs:
         run: npm run test
       - name: Upload test report
         if: steps.test-validation.outcome == 'failure'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: test-report
           path: test.json
   build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Get code
@@ -58,7 +59,7 @@ jobs:
         id: build-website
         run: npm run build
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: dist-files
           path: dist
